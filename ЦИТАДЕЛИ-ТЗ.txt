@@ -1,0 +1,45 @@
+1. GameEngin
+- Crown
+- ImageSrcFroCrown
+- Playrs
+
+
+* getBuildingsFromDeck(count)
+* getCrown()
+* getCoinForEachYellowBuilding()
+* getCoinForEachRedBuilding()
+* getCoinForEachGreenBuilding()
+* getCoinForEachBlueBuilding()
+* getCoin(count)
+* getBonusCoin()
+* spendCoin(count)
+* getCard()
+* discardACard()
+* buildOneBuilding()  
+* destroyBuilding()
+* checkIfPossibleToDestroyBuilding()
+* killPlayer()
+* stealMoney()
+* exchangeHandWithPlayer()
+* changeSomeCardFromHand()
+
+
+2. Role
+- SequenceOfMoves 
+- RoleName 
+- isHaveBuildingDestroyImune (t/f)
+- ImageSrc 
+
+3. Building
+- ImageSrc
+- color
+- price
+- haveImune
+- buildName
+
+4. Player
+- coins
+- buildingsInTown[]
+- buildingsInHand[]
+- role
+- isDead (t/f)

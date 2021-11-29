@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>citadels table game</title>
+
+</head>
+
+<body>
+    <div style="display: flex;">
+        <div class="js-current-player"></div>
+        <div style="margin-left: 25px;" class="js-current-player-action"></div>
+    </div>
+    <div>
+        <label for="pname">Player Name</label>
+        <input type="text" id="pname" name="pname"><br><br>
+    </div>
+    <button class="js-add-player" onclick="game.joinToGame()">Додати гравця</button>
+    <div class="js-players-list"></div>
+    <div class="js-roles-list"></div>
+    <button class="js-add-player" onclick="game.starGame()">Старт</button>
+
+    <script type="text/javascript" src="app.js"></script>
+</body>
+
+</html>
