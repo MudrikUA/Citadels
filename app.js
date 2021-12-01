@@ -58,85 +58,88 @@ class GameEngine {
 
     initRoles() {
         console.log('----------init roles------------');
-        this.roles.push(new Role('Ассасин', 1, false, ''));
-        this.roles.push(new Role('Вор', 2, false, ''));
-        this.roles.push(new Role('Чародей', 3, false, ''));
-        this.roles.push(new Role('Король', 4, false, ''));
-        this.roles.push(new Role('Епископ', 5, false, ''));
-        this.roles.push(new Role('Купец', 6, false, ''));
-        this.roles.push(new Role('Зодчий', 7, false, ''));
-        this.roles.push(new Role('Кондотьер', 8, false, ''));
+        this.roles.push(new Role('Ассасин', 1, false, 'src/img/roles/role_1.jpg'));
+        this.roles.push(new Role('Вор', 2, false, 'src/img/roles/role_2.jpg'));
+        this.roles.push(new Role('Чародей', 3, false, 'src/img/roles/role_3.jpg'));
+        this.roles.push(new Role('Король', 4, false, 'src/img/roles/role_4.jpg'));
+        this.roles.push(new Role('Епископ', 5, false, 'src/img/roles/role_5.jpg'));
+        this.roles.push(new Role('Купец', 6, false, 'src/img/roles/role_6.jpg'));
+        this.roles.push(new Role('Зодчий', 7, false, 'src/img/roles/role_7.jpg'));
+        this.roles.push(new Role('Кондотьер', 8, false, 'src/img/roles/role_8.jpg'));
         console.log('OK');
     }
 
     initBuildings() {
         console.log('----------init Buildings------------'); //  constructor(buildName, price, color, isHaveBuildingDestroyImune, imageSrc, type)
         for (let index = 0; index < 3; index++) {
-            this.buildings.push(new Building("Лавка", 2, "green", false, "", 1, false));
+            this.buildings.push(new Building("Лавка", 2, "green", false, "src/img/card/1.jpg", 1, false));
         }
         for (let index = 0; index < 3; index++) {
-            this.buildings.push(new Building("Порт", 3, "green", false, "", 2, false));
+            this.buildings.push(new Building("Порт", 3, "green", false, "src/img/card/2.jpg", 2, false));
         }
         for (let index = 0; index < 4; index++) {
-            this.buildings.push(new Building("Рынок", 2, "green", false, "", 3, false));
+            this.buildings.push(new Building("Рынок", 2, "green", false, "src/img/card/3.jpg", 3, false));
+        }
+        for (let index = 0; index < 3; index++) {
+            this.buildings.push(new Building("Гавань", 4, "green", false, "src/img/card/4.jpg", 4, false));
         }
         for (let index = 0; index < 2; index++) {
-            this.buildings.push(new Building("Гавань", 4, "green", false, "", 4, false));
-        }
-        for (let index = 0; index < 2; index++) {
-            this.buildings.push(new Building("Ратуша", 5, "green", false, "", 5, false));
+            this.buildings.push(new Building("Ратуша", 5, "green", false, "src/img/card/5.jpg", 5, false));
         }
         for (let index = 0; index < 5; index++) {
-            this.buildings.push(new Building("Таверна", 1, "green", false, "", 6, false));
+            this.buildings.push(new Building("Таверна", 1, "green", false, "src/img/card/6.jpg", 6, false));
         }
         for (let index = 0; index < 5; index++) {
-            this.buildings.push(new Building("Поместье", 3, "yellow", false, "", 7, false));
+            this.buildings.push(new Building("Поместье", 3, "yellow", false, "src/img/card/7.jpg", 7, false));
         }
         for (let index = 0; index < 4; index++) {
-            this.buildings.push(new Building("Замок", 4, "yellow", false, "", 8, false));
+            this.buildings.push(new Building("Замок", 4, "yellow", false, "src/img/card/8.jpg", 8, false));
         }
         for (let index = 0; index < 3; index++) {
-            this.buildings.push(new Building("Палаццо", 5, "yellow", false, "", 9, false));
+            this.buildings.push(new Building("Палаццо", 5, "yellow", false, "src/img/card/9.jpg", 9, false));
         }
         for (let index = 0; index < 3; index++) {
-            this.buildings.push(new Building("Церковь", 2, "blue", false, "", 10, false));
+            this.buildings.push(new Building("Церковь", 2, "blue", false, "src/img/card/10.jpg", 10, false));
         }
         for (let index = 0; index < 3; index++) {
-            this.buildings.push(new Building("Монастырь", 3, "blue", false, "", 11, false));
+            this.buildings.push(new Building("Монастырь", 3, "blue", false, "src/img/card/11.jpg", 11, false));
         }
         for (let index = 0; index < 3; index++) {
-            this.buildings.push(new Building("Храм", 1, "blue", false, "", 12, false));
+            this.buildings.push(new Building("Храм", 1, "blue", false, "src/img/card/12.jpg", 12, false));
         }
         for (let index = 0; index < 2; index++) {
-            this.buildings.push(new Building("Собор", 5, "blue", false, "", 13, false));
+            this.buildings.push(new Building("Собор", 5, "blue", false, "src/img/card/13.jpg", 13, false));
+        }
+        for (let index = 0; index < 2; index++) {
+            this.buildings.push(new Building("Крепость", 5, "red", false, "src/img/card/14.jpg", 14, false));
         }
         for (let index = 0; index < 3; index++) {
-            this.buildings.push(new Building("Крепость", 5, "red", false, "", 14, false));
+            this.buildings.push(new Building("Марсово поле", 3, "red", false, "src/img/card/15.jpg", 15, false));
         }
         for (let index = 0; index < 3; index++) {
-            this.buildings.push(new Building("Марсово поле", 3, "red", false, "", 15, false));
+            this.buildings.push(new Building("Дозорная башня", 1, "red", false, "src/img/card/16.jpg", 16, false));
         }
         for (let index = 0; index < 3; index++) {
-            this.buildings.push(new Building("Дозорная башня", 1, "red", false, "", 16, false));
-        }
-        for (let index = 0; index < 3; index++) {
-            this.buildings.push(new Building("Тюрма", 2, "red", false, "", 17, false));
+            this.buildings.push(new Building("Тюрма", 2, "red", false, "src/img/card/17.jpg", 17, false));
         }
         //bonus
-        this.buildings.push(new Building("Форт", 3, "purple", true, "", 18, true));
-        this.buildings.push(new Building("Имперская казна", 5, "purple", false, "", 19, true));
-        this.buildings.push(new Building("Собрание карт", 5, "purple", false, "", 20, true));
-        this.buildings.push(new Building("Библиотека", 6, "purple", false, "", 21, true));
-        this.buildings.push(new Building("Обсерватория", 4, "purple", false, "", 22, true));
-        this.buildings.push(new Building("Кладбище", 5, "purple", false, "", 23, true));
-        this.buildings.push(new Building("Великая стена", 6, "purple", false, "", 24, true));
-        this.buildings.push(new Building("Квартал призраков", 2, "purple", false, "", 25, true));
-        this.buildings.push(new Building("Университет", 6, "purple", false, "", 26, true));
-        this.buildings.push(new Building("Врата дракона", 6, "purple", false, "", 27, true));
-        this.buildings.push(new Building("Школа магии", 6, "purple", false, "", 28, true));
-        this.buildings.push(new Building("Кузня", 5, "purple", false, "", 29, true));
-        this.buildings.push(new Building("Лаборатория", 5, "purple", false, "", 30, true));
+        for (let index = 0; index < 2; index++) {
+            this.buildings.push(new Building("Форт", 3, "purple", true, "src/img/card/18.jpg", 18, true));
+        }
+        this.buildings.push(new Building("Имперская казна", 5, "purple", false, "src/img/card/19.jpg", 19, true));
+        this.buildings.push(new Building("Собрание карт", 5, "purple", false, "src/img/card/20.jpg", 20, true));
+        this.buildings.push(new Building("Библиотека", 6, "purple", false, "src/img/card/21.jpg", 21, true));
+        this.buildings.push(new Building("Обсерватория", 4, "purple", false, "src/img/card/22.jpg", 22, true));
+        this.buildings.push(new Building("Кладбище", 5, "purple", false, "src/img/card/23.jpg", 23, true));
+        this.buildings.push(new Building("Великая стена", 6, "purple", false, "src/img/card/24.jpg", 24, true));
+        this.buildings.push(new Building("Квартал призраков", 2, "purple", false, "src/img/card/25.jpg", 25, true));
+        this.buildings.push(new Building("Университет", 6, "purple", false, "src/img/card/26.jpg", 26, true));
+        this.buildings.push(new Building("Врата дракона", 6, "purple", false, "src/img/card/27.jpg", 27, true));
+        this.buildings.push(new Building("Школа магии", 6, "purple", false, "src/img/card/28.jpg", 28, true));
+        this.buildings.push(new Building("Кузня", 5, "purple", false, "src/img/card/29.jpg", 29, true));
+        this.buildings.push(new Building("Лаборатория", 5, "purple", false, "src/img/card/30.jpg", 30, true));
 
+        this.shufflingСards(this.buildings);
         console.log('OK');
     }
 
@@ -153,7 +156,7 @@ class GameEngine {
         //var gameEngine = new GameEngine();
         console.log('----------joinToGame------------');
         if (document.querySelector('#pname') && this.players.length < 7) {
-            let newPlayer = new Player(document.querySelector('#pname').value, 2, [], getRandomFourStartingBuildings(), [], false);
+            let newPlayer = new Player(document.querySelector('#pname').value, 2, [], this.getRandomFourStartingBuildings(), [], false);
             this.players.push(newPlayer);
             this.updatePlayerView();
         }
@@ -308,7 +311,17 @@ class GameEngine {
     }
 
     getRandomFourStartingBuildings() {
+        console.log("before" + this.buildings.length);
+        let result = [];
+        for (let index = 0; index < 4; index++) {
+            result.push(this.buildings.shift());
+        }
+        console.log("after" + this.buildings.length);
+        return result;
+    }
 
+    shufflingСards(array) {
+        array.sort(() => Math.random() - 0.5);
     }
 
     //--------game functionality -------------
@@ -362,7 +375,11 @@ class GameEngine {
         this.roles.forEach((element, index) => {
             var role = document.createElement("div");
             if (!element.isSelected && this.currentPhase === 0) {
-                role.innerHTML = '<div style="color:green" onclick="game.selectRole(this)" data-id="' + index + '">' + element.roleName + '</div>';
+                role.style.width = "200px;";
+                role.style.height = "312px";
+                role.innerHTML = '<div style="color:green; background:url(' + element.imageSrc +
+                    ');background-repeat: no-repeat; background-size: contain; height: 312px; width: 200px;" onclick="game.selectRole(this);" data-id="' +
+                    index + '">' + element.roleName + '</div>';
             } else {
                 //role.innerHTML = '<div style="color:red" data-id="' + index + '">' + element.roleName + '</div>';
             }
@@ -370,12 +387,18 @@ class GameEngine {
         });
         this.selectedHideRoles.forEach((element, index) => {
             var role = document.createElement("div");
-            role.innerHTML = '<div>' + element.roleName + '</div>';
+            role.style.width = "200px;";
+            role.style.height = "312px";
+            role.innerHTML = '<div style="color:green; background:url(' + element.imageSrc +
+                ');background-repeat: no-repeat; background-size: contain; height: 312px; width: 200px;">' + element.roleName + '</div>';
             document.querySelector('.js-hide-roles-list').appendChild(role);
         });
         this.selectedUnHideRoles.forEach((element, index) => {
             var role = document.createElement("div");
-            role.innerHTML = '<div>' + element.roleName + '</div>';
+            role.style.width = "200px;";
+            role.style.height = "312px";
+            role.innerHTML = '<div style="color:green; background:url(' + element.imageSrc +
+                ');background-repeat: no-repeat; background-size: contain; height: 312px; width: 200px;">' + element.roleName + '</div>';
             document.querySelector('.js-unhide-roles-list').appendChild(role);
         });
     }
