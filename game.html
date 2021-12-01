@@ -19,9 +19,19 @@
         <input type="text" id="pname" name="pname"><br><br>
     </div>
     <button class="js-add-player" onclick="game.joinToGame()">Додати гравця</button>
-    <div class="js-players-list"></div>
-    <div class="js-roles-list"></div>
-    <button class="js-add-player" onclick="game.starGame()">Старт</button>
+    <div style="border: 1px solid black;">Гравці:
+        <div class="js-players-list"></div>
+    </div>
+    <div style="border: 1px solid black;">Ролі:
+        <div class="js-roles-list"></div>
+    </div>
+    <div style="border: 1px solid black;">Скриті ролі:
+        <div class="js-hide-roles-list"></div>
+    </div>
+    <div style="border: 1px solid black;">Відкриті ролі:
+        <div class="js-unhide-roles-list"></div>
+    </div>
+    <button class="js-add-player" onclick="game.performNewPhase()">Старт</button>
 
     <script type="text/javascript" src="app.js"></script>
 </body>
