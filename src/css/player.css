@@ -1,0 +1,66 @@
+.player-hand-cards{
+    display: flex;
+    border: 1px dashed #ffa800 !important;
+}
+
+.player-builds{
+    display: flex;
+    margin-left: 20px;
+    border: 1px dashed #ffa800 !important;
+}
+
+.player-block{
+    border: 1px solid !important;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: fit-content;
+    padding: 10px;
+    display: flex;
+}
+
+.player-hand-card{
+    background-repeat: no-repeat !important;; 
+    background-size: contain !important;; 
+    height: 150px; 
+    width: 96px;
+}
+
+.player-build{
+    background-repeat: no-repeat !important;; 
+    background-size: contain !important;; 
+    height: 150px; 
+    width: 96px;
+}
+
+.player-roles{
+    display: flex;
+    margin-left: 20px;
+    border: 1px dashed #ffa800 !important;
+}
+
+.player-role{
+    background-repeat: no-repeat !important;; 
+    background-size: contain !important;; 
+    height: 150px; 
+    width: 96px;
+}
+
+.player-crown{
+    background-repeat: no-repeat !important;; 
+    background-size: contain !important;; 
+    height: 50px; 
+    width: 50px;
+    background:url(../../src/img/icons/crown.png);
+    margin-left: 10px;
+    margin-top: 100%;
+}
+
+.player-crown-active{
+    background-repeat: no-repeat !important;; 
+    background-size: contain !important;; 
+    height: 50px; 
+    width: 50px;
+    background:url(../../src/img/icons/active-crown.png);
+    margin-left: 10px;
+    margin-top: 100%;
+}

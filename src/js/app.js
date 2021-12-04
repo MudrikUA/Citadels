@@ -16,7 +16,7 @@ class GameEngine {
             this.drowUnHideCard = 0;
             this.phases = [];
             this.currentPhase = 0;
-
+            this.selectedCardForDetailsShow = null;
             this.iniGame();
         }
         return GameEngine._instance;
@@ -41,13 +41,12 @@ class GameEngine {
     }
 
     iniGame() {
-        console.log('----------init game------------');
         this.initRoles();
         this.initBuildings();
         this.initActions();
         this.initGameActions();
         //this.updateRolesView();
-        console.log('OK');
+        console.log('iniGame - OK');
     }
 
     initActions() {
@@ -57,7 +56,6 @@ class GameEngine {
     }
 
     initRoles() {
-        console.log('----------init roles------------');
         this.roles.push(new Role('Ассасин', 1, false, 'src/img/roles/role_1.jpg'));
         this.roles.push(new Role('Вор', 2, false, 'src/img/roles/role_2.jpg'));
         this.roles.push(new Role('Чародей', 3, false, 'src/img/roles/role_3.jpg'));
@@ -66,11 +64,10 @@ class GameEngine {
         this.roles.push(new Role('Купец', 6, false, 'src/img/roles/role_6.jpg'));
         this.roles.push(new Role('Зодчий', 7, false, 'src/img/roles/role_7.jpg'));
         this.roles.push(new Role('Кондотьер', 8, false, 'src/img/roles/role_8.jpg'));
-        console.log('OK');
+        console.log('initRoles - OK');
     }
 
     initBuildings() {
-        console.log('----------init Buildings------------'); //  constructor(buildName, price, color, isHaveBuildingDestroyImune, imageSrc, type)
         for (let index = 0; index < 3; index++) {
             this.buildings.push(new Building("Лавка", 2, "green", false, "src/img/card/1.jpg", 1, false));
         }
@@ -140,23 +137,20 @@ class GameEngine {
         this.buildings.push(new Building("Лаборатория", 5, "purple", false, "src/img/card/30.jpg", 30, true));
 
         this.shufflingСards(this.buildings);
-        console.log('OK');
+        console.log('initBuildings - OK');
     }
 
     initGameActions() {
-        console.log('----------init initGameActions------------');
         this.phases.push(new GameActions('Выбор класса', 1));
         this.phases.push(new GameActions('Збор ресурсов', 2));
         this.phases.push(new GameActions('Строительство', 3));
         this.phases.push(new GameActions('Особое свойство персонажа', 4));
-        console.log('OK');
+        console.log('initGameActions - OK');
     }
 
     joinToGame() {
-        //var gameEngine = new GameEngine();
-        console.log('----------joinToGame------------');
         if (document.querySelector('#pname') && this.players.length < 7) {
-            let newPlayer = new Player(document.querySelector('#pname').value, 2, [], this.getRandomFourStartingBuildings(), [], false);
+            let newPlayer = new Player(document.querySelector('#pname').value, 2, this.getRandomFourStartingBuildings(), this.getRandomFourStartingBuildings(), [], false);
             this.players.push(newPlayer);
             this.updatePlayerView();
         }
@@ -233,7 +227,6 @@ class GameEngine {
     drowRoleAutomaticaly(numberOfRoles, isHide) {
         for (let i = 0; i < numberOfRoles; ++i) {
             let randomRole = getRandomInt(0, 7);
-            console.log("random-> " + randomRole);
             if (randomRole === 3 || this.roles[randomRole].isSelected) {
                 --i;
             } else if (!this.roles[randomRole].isSelected) {
@@ -279,7 +272,7 @@ class GameEngine {
         return player;
     }
 
-    getNextPlayerInOneTurnByRole() {
+    getNextPlayerInOneTurnByRole() {//перевірити що це взагалі, і чи воно працює
         let maxPlayerRoles = this.players.length > 3 ? 1 : 2;
         let player = this.players[this.currentPlayerIndex];
         if (!player && this.players[0].role.length !== maxPlayerRoles) {
@@ -311,12 +304,10 @@ class GameEngine {
     }
 
     getRandomFourStartingBuildings() {
-        console.log("before" + this.buildings.length);
         let result = [];
         for (let index = 0; index < 4; index++) {
             result.push(this.buildings.shift());
         }
-        console.log("after" + this.buildings.length);
         return result;
     }
 
@@ -346,21 +337,70 @@ class GameEngine {
 
     //--------engine functionality -------------
     updatePlayerView() {
-        console.log('----------updatePlayerView------------');
         document.querySelector('.js-players-list').innerHTML = "";
         this.players.forEach((element, index) => {
             var player = document.createElement("div");
+            player.className = "player-block";
             let playerRoles = "";
             element.role.forEach((role) => {
                 playerRoles += role.roleName;
             });
             if (!this.crownPlayerIndex) {
-                player.innerHTML = '<div onclick="game.selectStartPlayer(this)" data-id="' + index +
-                    '">' + element.playerName + " -> " + playerRoles + " -> " + element.coins + " -> " +
-                    element.buildingsInHand + " -> " + element.buildingsInTown + '</div>';
-            } else {
-                player.innerHTML = '<div >' + element.playerName + " -> " + playerRoles + element.coins + " -> " +
-                    element.buildingsInHand + " -> " + element.buildingsInTown + '</div>';
+                //-------------------------------------------- карти на руці
+                let playerHandEl = document.createElement("div")
+                playerHandEl.className = 'player-hand-cards';
+                element.buildingsInHand.forEach((element, index) => {
+                    let hand = document.createElement("div")
+                    hand.innerHTML = `<div class='player-hand-card' style="background:url(${element.imageSrc});"></div>`;
+                    this.setMousOverEvent(hand, element);
+                    this.setMouseOutEvent(hand);
+                    playerHandEl.appendChild(hand);
+                });
+                element.buildingsInHand.length > 0 ? player.appendChild(playerHandEl) : '';
+
+                //-------------------------------------------- роль
+                let playerRolesEl = document.createElement("div")
+                playerRolesEl.className = 'player-roles';
+                element.role.forEach((element, index) => {
+                    let role = document.createElement("div")
+                    role.innerHTML = `<div class='player-role' style="background:url(${element.imageSrc});"></div>`;
+                    this.setMousOverEvent(role, element);
+                    this.setMouseOutEvent(role);
+                    playerRolesEl.appendChild(role);
+                });
+                element.role.length > 0 ? player.appendChild(playerRolesEl) : "";
+
+                //-------------------------------------------- карти на на столі
+                let playerBuildsEl = document.createElement("div")
+                playerBuildsEl.className = 'player-builds';
+                element.buildingsInTown.forEach((element, index) => {
+                    let building = document.createElement("div")
+                    building.innerHTML = `<div class='player-build' style="background:url(${element.imageSrc});"></div>`;
+                    this.setMousOverEvent(building, element);
+                    this.setMouseOutEvent(building);
+                    playerBuildsEl.appendChild(building);
+                });
+                player.appendChild(playerBuildsEl);
+
+                let playerCrownEl = document.createElement("div")
+                playerCrownEl.className = 'player-crown-container';
+                if(this.crownPlayerIndex === index){
+                    playerCrownEl.innerHTML = `<div class='player-crown-active'></div>`;
+                }else{
+                    playerCrownEl.innerHTML = `<div class='player-crown'></div>`;
+                }
+                
+                player.appendChild(playerCrownEl);
+
+                //element.buildingsInTown.length > 0 ? player.appendChild(playerBuildsEl) : '';
+                //--------------------------------------------
+                //let playerHandEl = `<div class='player-hand-cards'>${element.buildingsInHand}</div>`;
+
+                // let playerBuildsEl = `<div class='player-builds'>${element.buildingsInTown}</div>`;
+                // let playerDetailsEl = `<div class='player-details'>${element.playerName} -> ${element.coins}</div>`;
+                // let playerRolesEl = `<div class='player-roles'>${playerRoles}</div>`;
+                // player.innerHTML = `<div class="player-block" onclick="game.selectStartPlayer(this)" data-id="${index}">
+                // ${playerHandEl} ${playerBuildsEl} ${playerDetailsEl} ${playerRolesEl} </div>`;
             }
             this.crownPlayerIndex === '' + index ? player.style.color = "gold" : '';
             document.querySelector('.js-players-list').appendChild(player);
@@ -372,41 +412,51 @@ class GameEngine {
         document.querySelector('.js-roles-list').innerHTML = "";
         document.querySelector('.js-hide-roles-list').innerHTML = "";
         document.querySelector('.js-unhide-roles-list').innerHTML = "";
+        //ролі для вибора
         this.roles.forEach((element, index) => {
             var role = document.createElement("div");
             if (!element.isSelected && this.currentPhase === 0) {
-                role.style.width = "200px;";
-                role.style.height = "312px";
-                role.innerHTML = '<div style="color:green; background:url(' + element.imageSrc +
-                    ');background-repeat: no-repeat; background-size: contain; height: 312px; width: 200px;" onclick="game.selectRole(this);" data-id="' +
-                    index + '">' + element.roleName + '</div>';
-            } else {
-                //role.innerHTML = '<div style="color:red" data-id="' + index + '">' + element.roleName + '</div>';
+                role.innerHTML = `<div class="role-card" style="background:url(${element.imageSrc});" onclick="game.selectRole(this);" data-id="${index}"></div>`;
             }
+            // else { //
+            //     role.innerHTML = `<div class="role-card" style="background:url(${element.imageSrc});" data-id="${index}"></div>`;
+            // }
+
             document.querySelector('.js-roles-list').appendChild(role);
         });
+        //скриті ролі
         this.selectedHideRoles.forEach((element, index) => {
             var role = document.createElement("div");
-            role.style.width = "200px;";
-            role.style.height = "312px";
-            role.innerHTML = '<div style="color:green; background:url(' + element.imageSrc +
-                ');background-repeat: no-repeat; background-size: contain; height: 312px; width: 200px;">' + element.roleName + '</div>';
+            role.innerHTML = `<div class="role-card" style="background:url(${element.imageSrc});" onclick="game.selectRole(this);" data-id="${index}"></div>`;
+            this.setMousOverEvent(role, element);
+            this.setMouseOutEvent(role);
             document.querySelector('.js-hide-roles-list').appendChild(role);
         });
+        //відкрити ролі
         this.selectedUnHideRoles.forEach((element, index) => {
             var role = document.createElement("div");
-            role.style.width = "200px;";
-            role.style.height = "312px";
-            role.innerHTML = '<div style="color:green; background:url(' + element.imageSrc +
-                ');background-repeat: no-repeat; background-size: contain; height: 312px; width: 200px;">' + element.roleName + '</div>';
+            role.innerHTML = `<div class="role-card" style="background:url(${element.imageSrc});" onclick="game.selectRole(this);" data-id="${index}"></div>`;
+            this.setMousOverEvent(role, element);
+            this.setMouseOutEvent(role);
             document.querySelector('.js-unhide-roles-list').appendChild(role);
         });
     }
 
     updateCurrentPlayerInfo() {
         let player = this.players[this.currentPlayerIndex];
-        document.querySelector('.js-current-player').innerHTML = player ? "Ход игрока -> " + player.playerName : "";
-        document.querySelector('.js-current-player-action').innerHTML = "test action -> " + this.currentPlayerIndex;
+        document.querySelector('.js-current-player').innerHTML = player ? `Ход игрока -> ${player.playerName}` : '';
+        document.querySelector('.js-current-player-action').innerHTML = `test action -> ${this.currentPlayerIndex}`
+    }
+
+    setMousOverEvent(target, object) {
+        target.addEventListener("mouseover", e => {
+            this.selectedCardForDetailsShow = object;
+        });
+    }
+    setMouseOutEvent(targer) {
+        targer.addEventListener("mouseout", e => {
+            this.selectedCardForDetailsShow = null;
+        });
     }
 
     static getInstance() {
@@ -462,3 +512,25 @@ class GameActions {
 }
 
 const game = new GameEngine();
+
+document.addEventListener('mousemove', e => {
+    if (e.altKey) {
+
+        var positionX = (e.pageX - window.scrollX + 500 * 0.64 > window.innerWidth ? (window.innerWidth - 500 * 0.64) : e.pageX - window.scrollX);
+        document.querySelector('.js-cardDetails').style.left = positionX + 10 + "px";
+
+        var positionY = (e.pageY - window.scrollY + 500 > window.innerHeight ? (window.innerHeight - 500) : e.pageY - window.scrollY);
+        document.querySelector('.js-cardDetails').style.top = positionY + 15 + "px";
+
+        if (game.selectedCardForDetailsShow) {
+            document.querySelector('.js-cardDetails').style.backgroundImage = 'url(' + game.selectedCardForDetailsShow.imageSrc + ')';
+        } else {
+            document.querySelector('.js-cardDetails').style.backgroundImage = '';
+        }
+
+    } else {
+        document.querySelector('.js-cardDetails').style.left = "-1000px";
+        document.querySelector('.js-cardDetails').style.top = "-1000px";
+    }
+});
+
