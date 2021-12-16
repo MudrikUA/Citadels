@@ -4,3 +4,8 @@ body{
     height: 100%;
     color: #907239!important
 }
+
+.js-notification-container{
+    color: red;
+    font-size: 150%;
+}

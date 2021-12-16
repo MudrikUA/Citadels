@@ -17,9 +17,18 @@ class GameEngine {
             this.phases = [];
             this.currentPhase = 0;
             this.selectedCardForDetailsShow = null;
+            this.notificationTimer = null;
             this.iniGame();
+            this.mocStartup();
         }
         return GameEngine._instance;
+    }
+
+    mocStartup() {
+        for (let index = 0; index < 6; index++) {
+            this.joinToGame(`test ${index}`);
+        }
+        this.performNewPhase();
     }
 
     resetAllMeta() {
@@ -148,12 +157,30 @@ class GameEngine {
         console.log('initGameActions - OK');
     }
 
-    joinToGame() {
-        if (document.querySelector('#pname') && this.players.length < 7) {
-            let newPlayer = new Player(document.querySelector('#pname').value, 2, this.getRandomFourStartingBuildings(), this.getRandomFourStartingBuildings(), [], false);
-            this.players.push(newPlayer);
-            this.updatePlayerView();
+    joinToGame(newPlayerName) {
+        if (newPlayerName && this.players.length < 7) {
+            if (!this.isPlayerWithSuchNameIsExist(newPlayerName)) {
+                let newPlayer = new Player(document.querySelector('#pname').value, 2, this.getRandomFourStartingBuildings(), this.getRandomFourStartingBuildings(), [], false);
+                this.players.push(newPlayer);
+                this.updatePlayerView();
+            } else {
+                this.showNotification("Такий гравець уже існує");
+            }
+        } else if (!newPlayerName) {
+            this.showNotification("Ім'я не може бути порожнім");
+        } else if (!this.players.length < 7) {
+            this.showNotification("Максимальна кількість гравців");
         }
+    }
+
+    isPlayerWithSuchNameIsExist(name) {
+        var result = false;
+        this.players.forEach((player, index) => {
+            if (player.playerName === name) {
+                result = true;
+            }
+        })
+        return result;
     }
 
     leftGame() {
@@ -169,7 +196,7 @@ class GameEngine {
     performNewPhase() {
         console.log(this.buildings);
         if (this.players.length < 3) {
-            console.log("мало гравців");
+            this.showNotification("мало гравців");
         } else {
             if (this.currentPhase === 0) {
                 this.updateRolesView();
@@ -345,6 +372,9 @@ class GameEngine {
             element.role.forEach((role) => {
                 playerRoles += role.roleName;
             });
+
+            let table = this.generatePlayerLayoutGrid();
+
             if (!this.crownPlayerIndex) {
                 //-------------------------------------------- карти на руці
                 let playerHandEl = document.createElement("div")
@@ -356,7 +386,7 @@ class GameEngine {
                     this.setMouseOutEvent(hand);
                     playerHandEl.appendChild(hand);
                 });
-                element.buildingsInHand.length > 0 ? player.appendChild(playerHandEl) : '';
+                table.querySelector('.tdPlayerHand').appendChild(playerHandEl);
 
                 //-------------------------------------------- роль
                 let playerRolesEl = document.createElement("div")
@@ -368,7 +398,7 @@ class GameEngine {
                     this.setMouseOutEvent(role);
                     playerRolesEl.appendChild(role);
                 });
-                element.role.length > 0 ? player.appendChild(playerRolesEl) : "";
+                table.querySelector('.tdPlayerRoles').appendChild(playerRolesEl);
 
                 //-------------------------------------------- карти на на столі
                 let playerBuildsEl = document.createElement("div")
@@ -380,17 +410,22 @@ class GameEngine {
                     this.setMouseOutEvent(building);
                     playerBuildsEl.appendChild(building);
                 });
-                player.appendChild(playerBuildsEl);
+                table.querySelector('.tdPlayerCity').appendChild(playerBuildsEl);
 
+                //-------------------------------------------- корона 
                 let playerCrownEl = document.createElement("div")
                 playerCrownEl.className = 'player-crown-container';
-                if(this.crownPlayerIndex === index){
+                if (this.crownPlayerIndex === index) {
                     playerCrownEl.innerHTML = `<div class='player-crown-active'></div>`;
-                }else{
+                } else {
                     playerCrownEl.innerHTML = `<div class='player-crown'></div>`;
                 }
-                
-                player.appendChild(playerCrownEl);
+                table.querySelector('.tdPlayeyCrown').appendChild(playerCrownEl);
+
+                //-------------------------------------------- золото 
+                let playerCoinsEl = document.createElement("div")
+                playerCoinsEl.className = 'player-coins-active';
+                table.querySelector('.tdPlayerCoins').appendChild(playerCoinsEl);
 
                 //element.buildingsInTown.length > 0 ? player.appendChild(playerBuildsEl) : '';
                 //--------------------------------------------
@@ -403,8 +438,38 @@ class GameEngine {
                 // ${playerHandEl} ${playerBuildsEl} ${playerDetailsEl} ${playerRolesEl} </div>`;
             }
             this.crownPlayerIndex === '' + index ? player.style.color = "gold" : '';
+            player.appendChild(table);
             document.querySelector('.js-players-list').appendChild(player);
         });
+    }
+    
+    generatePlayerLayoutGrid() {
+        var tbl = document.createElement('table');
+        var tbdy = document.createElement('tbody');
+        var tr1 = document.createElement('tr');
+        var tr2 = document.createElement('tr');
+        var tdPlayerRoles = document.createElement('td');
+        var tdPlayerCity = document.createElement('td');
+        var tdPlayeyCrown = document.createElement('td');
+        var tdPlayerCoins = document.createElement('td');
+        var tdPlayerHand = document.createElement('td');
+        tdPlayerRoles.className = 'tdPlayerRoles';
+        tdPlayerCity.className = 'tdPlayerCity';
+        tdPlayeyCrown.className = 'tdPlayeyCrown';
+        tdPlayerCoins.className = 'tdPlayerCoins';
+        tdPlayerHand.className = 'tdPlayerHand';
+
+        tdPlayeyCrown.rowSpan = 2;
+
+        tr1.appendChild(tdPlayerRoles);
+        tr1.appendChild(tdPlayerCity);
+        tr1.appendChild(tdPlayeyCrown);
+        tr2.appendChild(tdPlayerCoins);
+        tr2.appendChild(tdPlayerHand);
+        tbdy.appendChild(tr1);
+        tbdy.appendChild(tr2);
+        tbl.appendChild(tbdy);
+        return tbl;
     }
 
     updateRolesView() {
@@ -421,7 +486,8 @@ class GameEngine {
             // else { //
             //     role.innerHTML = `<div class="role-card" style="background:url(${element.imageSrc});" data-id="${index}"></div>`;
             // }
-
+            this.setMousOverEvent(role, element);
+            this.setMouseOutEvent(role);
             document.querySelector('.js-roles-list').appendChild(role);
         });
         //скриті ролі
@@ -457,6 +523,14 @@ class GameEngine {
         targer.addEventListener("mouseout", e => {
             this.selectedCardForDetailsShow = null;
         });
+    }
+
+    showNotification(text) {
+        document.querySelector('.js-notification-container').innerHTML = text;
+        clearTimeout(this.notificationTimer);
+        this.notificationTimer = setTimeout(function () {
+            document.querySelector('.js-notification-container').innerHTML = "";
+        }, 6000);
     }
 
     static getInstance() {

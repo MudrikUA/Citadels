@@ -64,3 +64,17 @@
     margin-left: 10px;
     margin-top: 100%;
 }
+
+.player-coins-active{
+    background-repeat: no-repeat !important;; 
+    background-size: contain !important;; 
+    height: 50px; 
+    width: 50px;
+    background:url(../../src/img/icons/coins.png);
+}
+
+.tdPlayerCoins{
+    text-align: center;
+    text-align: -webkit-center;
+    
+}

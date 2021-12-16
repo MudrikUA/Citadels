@@ -13,6 +13,8 @@
 </head>
 
 <body>
+
+    <div class="js-notification-container"></div>
     <div style="display: flex;">
         <div class="js-current-player"></div>
         <div style="margin-left: 25px;" class="js-current-player-action"></div>
@@ -21,7 +23,7 @@
         <label for="pname">Player Name</label>
         <input type="text" id="pname" name="pname"><br><br>
     </div>
-    <button class="js-add-player" onclick="game.joinToGame()">Додати гравця</button>
+    <button class="js-add-player" onclick="game.joinToGame(document.querySelector('#pname') ? document.querySelector('#pname').value : undefined)">Додати гравця</button>
     <button class="js-add-player" onclick="game.performNewPhase()">Старт</button>
    
     <div style="border: 1px solid black;">Ролі:
